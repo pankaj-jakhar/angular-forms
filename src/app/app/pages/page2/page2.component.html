@@ -1,0 +1,8 @@
+<p>page2 works!</p>
+<button (click)="callApi()">Call api</button>
+<button (click)="page1()">page1</button>
+<div *ngIf="todoData$ | async as todoData">
+  <div>{{ todoData.id }}</div>
+  <div>{{ todoData.completed }}</div>
+  <div>{{ todoData.title }}</div>
+</div>

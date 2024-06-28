@@ -6,26 +6,33 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { InputComponent } from './app/components/input/input.component';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { InputNewComponent } from './app/components/input-new/input-new.component';
+import { SelectComponent } from './app/components/select/select.component';
+import { MatSelectModule } from '@angular/material/select';
+import { Page1Component } from './app/pages/page1/page1.component';
+import { Page2Component } from './app/pages/page2/page2.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     InputComponent,
-    InputNewComponent
+    SelectComponent,
+    Page1Component,
+    Page2Component,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatSelectModule,
   ],
-  providers: [
-    provideAnimationsAsync()
-  ],
-  bootstrap: [AppComponent]
+  providers: [provideAnimationsAsync()],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,14 +1,1 @@
-<form [formGroup]="userForm"  class="example-form" (ngSubmit)="onSubmit()">
-  <app-input emailFormControl="name" formFieldLabel="Name"/>
-  @if (userForm.get('name')?.value) {
-    <app-input emailFormControl="email" formFieldLabel="Email" />
-  }
-  <app-input emailFormControl="address" formFieldLabel="Address" />
-  <app-input emailFormControl="mobile" formFieldLabel="Mobile" />
-  <app-input emailFormControl="age" formFieldLabel="Age" />
-  <app-input emailFormControl="gender" formFieldLabel="Gender" />
-  <button type="submit">submit</button>
-</form>
-
-
 <router-outlet />

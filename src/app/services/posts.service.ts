@@ -3,33 +3,33 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 import { ApiService, IApiParams } from './service';
 
-interface Todo {
+interface Posts {
   userId: number;
   id: number;
   title: string;
-  completed: boolean;
+  body: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class NewService extends ApiService {
-  data$ = new BehaviorSubject<Todo | null>(null);
+export class PostsService extends ApiService {
+  data$ = new BehaviorSubject<Posts[]>([]);
   error$ = new BehaviorSubject<HttpErrorResponse | null>(null);
   loading$ = new BehaviorSubject<boolean>(false);
 
   getData() {
     this.loading$.next(true);
     const params: IApiParams = {
-      path: 'https://jsonplaceholder.typicode.com/todos/1',
+      path: 'https://jsonplaceholder.typicode.com/posts',
       method: 'GET',
     };
 
-    this.cacheRequest<Todo>(params)
+    this.cacheRequest<Posts[]>(params)
       .pipe(
         tap({
           next: (data) => {
-            this.data$.next(data);
+            this.data$.next([...this.data$.getValue(), ...data]);
           },
           error: (error) => {
             this.error$.next(error);
