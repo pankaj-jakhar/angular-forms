@@ -19,6 +19,7 @@ export class NewService extends ApiService {
   loading$ = new BehaviorSubject<boolean>(false);
 
   getData() {
+    console.log('data');
     this.loading$.next(true);
     const params: IApiParams = {
       path: 'https://jsonplaceholder.typicode.com/todos/1',

@@ -1,28 +1,15 @@
-<form [formGroup]="userForm" class="example-form" (ngSubmit)="onSubmit()">
-  <app-input emailFormControl="name" formFieldLabel="Name" />
-  @if (userForm.get('name')?.value) {
-  <app-input emailFormControl="email" formFieldLabel="Email" />
-  }
-  <app-select></app-select>
-  <app-input emailFormControl="address" formFieldLabel="Address" />
-  <app-input emailFormControl="mobile" formFieldLabel="Mobile" />
-  <app-input emailFormControl="age" formFieldLabel="Age" />
-  <app-input emailFormControl="gender" formFieldLabel="Gender" />
-  <button type="submit">submit</button>
-</form>
-
 <button (click)="callApi()">Call api</button>
 <button (click)="page2()">page2</button>
 
-<div *ngIf="todoLoading$ | async">Loading todo....</div>
 <div *ngIf="postDataLoading$ | async">Loading postts....</div>
 <div *ngIf="loading$ | async">Loading....</div>
 
-<div *ngIf="todoData$ | async as todoData">
-  <div>{{ todoData.id }}</div>
-  <div>{{ todoData.completed }}</div>
-  <div>{{ todoData.title }}</div>
-</div>
+<input
+  placeholder="search"
+  (input)="filter($event)"
+  [(ngModel)]="searchValue"
+/>
+
 <div *ngFor="let post of postData$ | async">
   <div>{{ post.id }}</div>
   <div>{{ post.title }}</div>

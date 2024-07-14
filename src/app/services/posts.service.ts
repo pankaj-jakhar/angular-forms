@@ -1,7 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
 import { ApiService, IApiParams } from './service';
+import { CacheService } from './cache.service';
 
 interface Posts {
   userId: number;
@@ -15,8 +16,18 @@ interface Posts {
 })
 export class PostsService extends ApiService {
   data$ = new BehaviorSubject<Posts[]>([]);
+  rawData$ = new BehaviorSubject<Posts[]>([]);
   error$ = new BehaviorSubject<HttpErrorResponse | null>(null);
   loading$ = new BehaviorSubject<boolean>(false);
+  filterData$ = new BehaviorSubject<string>('');
+
+  constructor(
+    public override http: HttpClient,
+    public override cache: CacheService
+  ) {
+    super(http, cache);
+    this.initializeFilter();
+  }
 
   getData() {
     this.loading$.next(true);
@@ -29,7 +40,8 @@ export class PostsService extends ApiService {
       .pipe(
         tap({
           next: (data) => {
-            this.data$.next([...this.data$.getValue(), ...data]);
+            this.data$.next(data);
+            this.rawData$.next(data);
           },
           error: (error) => {
             this.error$.next(error);
@@ -40,5 +52,21 @@ export class PostsService extends ApiService {
         })
       )
       .subscribe();
+  }
+
+  initializeFilter() {
+    combineLatest([this.rawData$, this.filterData$])
+      .pipe(
+        map(([rawData, filterString]) => {
+          return rawData.filter(
+            (post) =>
+              post.title.includes(filterString) ||
+              post.body.includes(filterString)
+          );
+        })
+      )
+      .subscribe((filteredData) => {
+        this.data$.next(filteredData);
+      });
   }
 }

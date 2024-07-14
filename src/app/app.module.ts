@@ -13,6 +13,7 @@ import { SelectComponent } from './app/components/select/select.component';
 import { MatSelectModule } from '@angular/material/select';
 import { Page1Component } from './app/pages/page1/page1.component';
 import { Page2Component } from './app/pages/page2/page2.component';
+import { FormComponent } from './app/pages/form/form.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { Page2Component } from './app/pages/page2/page2.component';
     SelectComponent,
     Page1Component,
     Page2Component,
+    FormComponent,
   ],
   imports: [
     BrowserModule,
