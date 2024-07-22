@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, firstValueFrom, map, tap } from 'rxjs';
 import { ApiService, IApiParams } from './service';
 import { CacheService } from './cache.service';
 
@@ -29,29 +29,22 @@ export class PostsService extends ApiService {
     this.initializeFilter();
   }
 
-  getData() {
+  async getData() {
     this.loading$.next(true);
     const params: IApiParams = {
       path: 'https://jsonplaceholder.typicode.com/posts',
       method: 'GET',
     };
 
-    this.cacheRequest<Posts[]>(params)
-      .pipe(
-        tap({
-          next: (data) => {
-            this.data$.next(data);
-            this.rawData$.next(data);
-          },
-          error: (error) => {
-            this.error$.next(error);
-          },
-          complete: () => {
-            this.loading$.next(false);
-          },
-        })
-      )
-      .subscribe();
+    try {
+      const data = await firstValueFrom(this.cacheRequest<Posts[]>(params));
+      this.data$.next(data);
+      this.rawData$.next(data);
+    } catch (error) {
+      this.error$.next(error as HttpErrorResponse);
+    } finally {
+      this.loading$.next(false);
+    }
   }
 
   initializeFilter() {
